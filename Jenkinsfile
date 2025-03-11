@@ -43,6 +43,7 @@ pipeline {
 
                     git config --global user.email "jenkins@mycompany.com"
                     git config --global user.name "Jenkins"
+                    git checkout master
                     git add ./azure/deploy.yaml
                     git commit -m "Update image tag to v${env.BUILD_NUMBER}"
                     git push origin master
