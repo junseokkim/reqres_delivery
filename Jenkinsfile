@@ -38,16 +38,22 @@ pipeline {
         stage('Update Deployment YAML for ArgoCD') {
             steps {
                 script {
-                    sh """
-                    sed -i 's|image: .*|image: ${REGISTRY}/${IMAGE_NAME}:v${env.BUILD_NUMBER}|' ./azure/deploy.yaml
-
-                    git config --global user.email "jenkins@mycompany.com"
-                    git config --global user.name "Jenkins"
-                    git checkout master
-                    git add ./azure/deploy.yaml
-                    git commit -m "Update image tag to v${env.BUILD_NUMBER}"
-                    git push origin master
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'Github-Cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh """
+                        git checkout main
+                        git pull origin main
+        
+                        sed -i 's|image: .*|image: ${REGISTRY}/${IMAGE_NAME}:v${env.BUILD_NUMBER}|' azure/deployment.yaml
+        
+                        git config --global user.email "jenkins@mycompany.com"
+                        git config --global user.name "Jenkins"
+                        git add azure/deployment.yaml
+                        git commit -m "Update image tag to v${env.BUILD_NUMBER}"
+                        
+                        # GitHub Personal Access Token (PAT) 사용하여 Push
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/junseokkim/reqres_delivery.git main
+                        """
+                    }
                 }
             }
         }
