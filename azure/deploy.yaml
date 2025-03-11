@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: delivery
-          image: kjs08.azurecr.io/delivery:v33
+          image: kjs08.azurecr.io/delivery:v34
           ports:
             - containerPort: 8080
