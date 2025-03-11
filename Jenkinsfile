@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sed -i 's|image: .*|image: ${REGISTRY}/${IMAGE_NAME}:v${env.BUILD_NUMBER}|' ./azure/deployment.yaml
+                    sed -i 's|image: .*|image: ${REGISTRY}/${IMAGE_NAME}:v${env.BUILD_NUMBER}|' /azure/deployment.yaml
 
                     git config --global user.email "jenkins@mycompany.com"
                     git config --global user.name "Jenkins"
