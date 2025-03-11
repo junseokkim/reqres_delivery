@@ -53,7 +53,7 @@ pipeline {
 
                         
                         # GitHub Personal Access Token (PAT) 사용하여 Push
-                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/junseokkim/reqres_delivery.git master
+                        git push --no-verify https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/junseokkim/reqres_delivery.git master
                         """
                     }
                 }
