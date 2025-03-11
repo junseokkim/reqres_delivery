@@ -41,8 +41,9 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'Github-Cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh """
                         git checkout master
-                        git pull origin master
-        
+                        git fetch origin
+                        git reset --hard origin/master 
+                        
                         sed -i 's|image: .*|image: ${REGISTRY}/${IMAGE_NAME}:v${env.BUILD_NUMBER}|' azure/deploy.yaml
         
                         git config --global user.email "jenkins@mycompany.com"
