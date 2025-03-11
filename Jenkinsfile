@@ -9,6 +9,19 @@ pipeline {
     }
  
     stages {
+        stage('Skip build if only deployment.yaml changed') {
+            steps {
+                script {
+                    def changedFiles = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
+                    if (changedFiles == "azure/deploy.yaml") {
+                        echo "Only deployment.yaml changed. Skipping build to prevent infinite loop."
+                        currentBuild.result = 'ABORTED'
+                        error("Skipping build to prevent infinite loop.")
+                    }
+                }
+            }
+        }
+        
         stage('Clone Repository') {
             steps {
                 checkout scm
